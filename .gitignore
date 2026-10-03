@@ -1,0 +1,16 @@
+# Ignore everything except what is needed for the project
+*
+
+!program/
+!include/
+!source/
+!tests/
+
+!.gitignore
+!makefile
+!*.md
+!*.txt
+!*.cpp
+!*.hpp
+
+
