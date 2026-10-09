@@ -10,14 +10,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 # Find all *.cpp files in source/ 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
-# Executable lies in program/(main.cpp)
-add_executable(main
-    program/main.cpp
+# Executable lies in program/(search.cpp)
+add_executable(search
+    program/search.cpp
     ${SOURCES}
 )
 
 # Compiler flags
-target_compile_options(main PRIVATE -Werror -Wextra -Wpedantic)
+target_compile_options(search PRIVATE -Werror -Wextra -Wpedantic)
 
 # Include directory is include/
-target_include_directories(main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(search PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)

@@ -106,7 +106,7 @@ class Parameters{
 
         // Parses args and fills out the parameter struct
         // True on success, False on failure
-        static bool parseArgv(int argc, char* argv[], Parameters& parametes);
+        bool parseArgv(int argc, char* argv[]);
 };
 
 #endif
