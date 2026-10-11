@@ -1,21 +1,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include "../include/common.hpp"
+
 #include <string>
-
-// Enum for the search methods
-enum class SearchMethod{
-    EXACT,
-    LSH,
-    HYPERCUBE,
-    IVFFLAT,
-    IVFPQ
-};
-
-enum class Set{
-    VALIDATION,
-    TEST
-};
 
 // Contains all parameters as they are defined in the original pdf
 class Parameters{
