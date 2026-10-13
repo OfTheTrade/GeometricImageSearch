@@ -6,7 +6,7 @@
 #include <vector>
 
 // Contains the images that make up the working database
-class DatabaseRecord{
+struct DatabaseRecord{
     // Format "HPatches folder name"/"image number (0-5)" 
     std::string image_id;
     // Frequency vector
@@ -14,7 +14,7 @@ class DatabaseRecord{
 };
 
 // Contains a single query
-class SearchQuery{
+struct SearchQuery{
     // HPatches folder
     std::string sequence_id;
     // Frequency vector
@@ -22,17 +22,17 @@ class SearchQuery{
 };
 
 // Contains the results of a single query
-class SearchResult{
+struct SearchResult{
     // HPatches folder
     std::string sequence_id;
     // Top 10 ranked images
     std::vector<std::string> top10PhotoIds;
     
     // Comparison Metrics
-    double RecallAt5;
-    double RecallAt10;
-    double mAPAt10;
-    double timeElapsed;
+    double RecallAt5 = 0.0;
+    double RecallAt10 = 0.0;
+    double APAt10 = 0.0;
+    double timeElapsed = 0.0;
 };
 
 
