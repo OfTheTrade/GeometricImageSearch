@@ -7,7 +7,7 @@
 
 // Contains the images that make up the working database
 struct DatabaseRecord{
-    // Format "HPatches folder name"/"image number (0-5)" 
+    // Format "HPatches folder name"/"image number (2-6)" 
     std::string image_id;
     // Frequency vector
     std::vector<float> vector;
