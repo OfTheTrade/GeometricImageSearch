@@ -40,31 +40,31 @@ struct SearchResult{
 class RunSearch{
     public:
         static std::vector<SearchResult> runExactSearch(
-            const std::vector<DatabaseRecord> database,
-            const std::vector<SearchQuery> queries
+            const std::vector<DatabaseRecord>& database,
+            const std::vector<SearchQuery>& queries
         );
 
         static std::vector<SearchResult> runLSHSearch(
-            const std::vector<DatabaseRecord> database,
-            const std::vector<SearchQuery> queries,
+            const std::vector<DatabaseRecord>& database,
+            const std::vector<SearchQuery>& queries,
             const Parameters parameters
         );
 
         static std::vector<SearchResult> runHypercubeSearch(
-            const std::vector<DatabaseRecord> database,
-            const std::vector<SearchQuery> queries,
+            const std::vector<DatabaseRecord>& database,
+            const std::vector<SearchQuery>& queries,
             const Parameters parameters
         );
 
         static std::vector<SearchResult> runIVFFlatSearch(
-            const std::vector<DatabaseRecord> database,
-            const std::vector<SearchQuery> queries,
+            const std::vector<DatabaseRecord>& database,
+            const std::vector<SearchQuery>& queries,
             const Parameters parameters
         );
         
         static std::vector<SearchResult> runIVFPQSearch(
-            const std::vector<DatabaseRecord> database,
-            const std::vector<SearchQuery> queries,
+            const std::vector<DatabaseRecord>& database,
+            const std::vector<SearchQuery>& queries,
             const Parameters parameters
         );
 };
