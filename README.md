@@ -9,3 +9,4 @@ To clean cmake created and compilation files: "make clean"
 Needs:
 cmake
 gxx
+opencv 

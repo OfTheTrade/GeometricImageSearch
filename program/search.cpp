@@ -2,6 +2,7 @@
 
 #include "../include/parameters.hpp"
 #include "../include/dataset.hpp"
+#include "../include/vocabulary.hpp"
 
 
 int main(int argc, char* args[]){

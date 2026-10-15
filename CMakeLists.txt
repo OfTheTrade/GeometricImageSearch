@@ -21,3 +21,8 @@ target_compile_options(search PRIVATE -Werror -Wextra -Wpedantic)
 
 # Include directory is include/
 target_include_directories(search PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Link with opencv library
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+target_link_libraries(search ${OpenCV_LIBS})
