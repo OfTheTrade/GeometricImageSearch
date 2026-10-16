@@ -9,7 +9,9 @@
 // Represents a folder in the hpatches directory
 class HPatchesSequence{
     public:
+        // Just the name
         std::string name;
+        // Path + Name
         std::string path;
         Set set;
 

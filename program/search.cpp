@@ -36,6 +36,11 @@ int main(int argc, char* args[]){
         }
 
     }
+
+    Vocabulary vocabulary;
+    if (!vocabulary.train(parameters, dataset)){
+        return 1;
+    }
     
     return 0;
 }
