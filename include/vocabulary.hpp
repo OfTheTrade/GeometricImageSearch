@@ -1,12 +1,12 @@
-#ifndef TRAINING_H
-#define TRAINING_H
+#ifndef VOCABULARY_H
+#define VOCABULARY_H
 
 #include "../include/parameters.hpp"
 #include "../include/dataset.hpp"
 
 #include <opencv2/opencv.hpp>
 
-// 
+// Stores/Computes the kmeans centers
 class Vocabulary{
     public:
         // The result of the kmeans lies here
