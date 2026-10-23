@@ -1,6 +1,6 @@
 #include "../include/vectorizer.hpp"
 
-bool Vectorizer::vectorizeImage(const std::string& img_path, const cv::Mat& centers, cv::Mat& img_vector){
+bool Vectorizer::vectorizeImage(const std::string& img_path, const cv::Mat& centers, std::vector<float>& img_vector){
     // Open the image using opencv
     cv::Mat img = cv::imread(img_path, cv::IMREAD_GRAYSCALE);
 
@@ -35,9 +35,9 @@ bool Vectorizer::vectorizeImage(const std::string& img_path, const cv::Mat& cent
     }
 
     // Normalise the result, dividing each by the total ammount of descriptors
-    img_vector = cv::Mat::zeros(1, center_ammount, CV_32F);
+    img_vector.resize(center_ammount);
     for (int i = 0; i < center_ammount; i++){
-        img_vector.at<float>(0, i) = static_cast<float>(center_descriptor_count[i]) / static_cast<float>(descriptor_ammount);
+        img_vector[i] = static_cast<float>(center_descriptor_count[i]) / static_cast<float>(descriptor_ammount);
     }
 
     return true;
