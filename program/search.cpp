@@ -3,6 +3,7 @@
 #include "../include/parameters.hpp"
 #include "../include/dataset.hpp"
 #include "../include/vocabulary.hpp"
+#include "../include/database.hpp"
 
 
 int main(int argc, char* args[]){
@@ -39,6 +40,11 @@ int main(int argc, char* args[]){
 
     Vocabulary vocabulary;
     if (!vocabulary.train(parameters, dataset)){
+        return 1;
+    }
+
+    Database database;
+    if (!database.build(parameters, vocabulary, dataset)){
         return 1;
     }
     
