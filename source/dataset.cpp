@@ -33,14 +33,10 @@ bool Dataset::parseDataset(std::string filename, std::string hp_path){
                 this->train.push_back(sequence);
             }else if (set == "validation"){
 
-                HPatchesSequence sequence;
-                sequence.name = name;
                 sequence.set = Set::VALIDATION;
                 this->validation.push_back(sequence);
             }else if (set == "test"){
 
-                HPatchesSequence sequence;
-                sequence.name = name;
                 sequence.set = Set::TEST;
                 this->test.push_back(sequence);
             }
