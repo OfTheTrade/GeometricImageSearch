@@ -77,8 +77,8 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
                 break;
             }
         }
-    }
-        
+         
+    }   
     // Combine the mirflicker and hpatches databases into the final database 
     this->databaseRecords.reserve(hp_records.size() + mir_records.size());
     this->databaseRecords.insert(databaseRecords.end(), hp_records.begin(), hp_records.end());
