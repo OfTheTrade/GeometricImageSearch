@@ -13,10 +13,7 @@ bool Vocabulary::train(const Parameters& parameters, const Dataset& dataset){
     cv::Ptr<cv::SIFT> sift = cv::SIFT::create();
 
     // Go through all hpatches sequences (folders) marked as "train" in the dataset
-    int wa = 0;
-    std::cout << "Aye capitan going to loop" << std::endl;
     for(size_t i = 0; i < dataset.train.size(); i++){
-        std::cout << "looping" << wa++ << std::endl;
         
         // Go through each photo of the sequence (0 to 6)
         for(int j = 1; j <= 6; j++){
@@ -78,7 +75,6 @@ bool Vocabulary::train(const Parameters& parameters, const Dataset& dataset){
         }
 
     }
-    std::cout << "Aye capitan going to outside loop" << std::endl;
 
     if (total_descriptor_ammount == 0){
         std::cerr << "Sift extraction resulted in zero total descriptors!" << std::endl;
@@ -97,7 +93,6 @@ bool Vocabulary::train(const Parameters& parameters, const Dataset& dataset){
     cv::TermCriteria criteria(cv::TermCriteria::EPS + cv::TermCriteria::COUNT, 100, 1e-4);
 
     cv::Mat labels;
-    std::cout << "Aye capitan going to kmeans" << std::endl;
     // Execute the kmeans
     try{
         cv::kmeans(kmeans_descriptors, parameters.vocab, labels, criteria, 3, cv::KMEANS_PP_CENTERS, this->centers);
