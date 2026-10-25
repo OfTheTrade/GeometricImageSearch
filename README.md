@@ -27,5 +27,4 @@ Needs the path to the splitfile, and the hpatches file (to create the correct fi
 -searchmethod.hpp: Contains the definitions for the database record and querry structs used by database.hpp/.cpp. Also contains a struct for the results of the search and static method definitions for the different search types.
 
 ## Note For Vocabulary Caching
-This is turned off by default, as to not mess up any automated tests. To enable, change the global variable "USE_VOCABULART_CACHE" in search.cpp. When the vocabulary training is successfuly run, the results will stored in a file called "vocabulary_cache.xml". If this is turned on, make sure to delete "vocabulary_cache.xml" if any parameters affecting the kmeans,
-like -K, -S, -seed or the splitfile are changed between executions, or else the results will be incorrect for the parameters given. 
+This is turned off by default, as to not mess up any automated tests. To enable, change the global variable "USE_VOCABULART_CACHE" in search.cpp. When the vocabulary training is successfuly run, the results will stored in a file called "vocabulary_cache.xml". If this is turned on, make sure to delete "vocabulary_cache.xml" if any parameters affecting the kmeans, like -K, -S, -seed or the splitfile are changed between executions, or else the results will be incorrect for the parameters given. 
