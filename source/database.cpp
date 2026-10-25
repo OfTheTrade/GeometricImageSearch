@@ -57,28 +57,27 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
     int mir_index = 1;
 
     // Process D mirflicker distractors, putting them into the database
-    if (false){
-        while (mir_records.size() < static_cast<size_t>(parameters.D)){  
-            DatabaseRecord mir_record;
-            mir_record.image_id = "im" + std::to_string(mir_index);
-            
-            std::string mir_img_path = parameters.mir_path + "/im" + std::to_string(mir_index) + ".jpg";
+    while (mir_records.size() < static_cast<size_t>(parameters.D)){  
+        DatabaseRecord mir_record;
+        mir_record.image_id = "im" + std::to_string(mir_index);
+        
+        std::string mir_img_path = parameters.mir_path + "/im" + std::to_string(mir_index) + ".jpg";
 
-            if (Vectorizer::vectorizeImage(mir_img_path, vocabulary.centers, mir_record.vector)){
-                mir_records.push_back(mir_record);
-            }else{
-                std::cout << "Warning : Unable to vectorize mirflicker image" << std::endl;
-            }
-
-            mir_index++;
-
-            if (mir_index > 25000){
-                std::cout << "Run out of mirflicker images before gathering the asked ammount" << std::endl;
-                break;
-            }
+        if (Vectorizer::vectorizeImage(mir_img_path, vocabulary.centers, mir_record.vector)){
+            mir_records.push_back(mir_record);
+        }else{
+            std::cout << "Warning : Unable to vectorize mirflicker image" << std::endl;
         }
+
+        mir_index++;
+
+        if (mir_index > 25000){
+            std::cout << "Run out of mirflicker images before gathering the asked ammount" << std::endl;
+            break;
+        }
+    }
          
-    }   
+    
     // Combine the mirflicker and hpatches databases into the final database 
     this->databaseRecords.reserve(hp_records.size() + mir_records.size());
     this->databaseRecords.insert(databaseRecords.end(), hp_records.begin(), hp_records.end());
