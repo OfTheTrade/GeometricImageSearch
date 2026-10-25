@@ -1,12 +1,13 @@
 # geometricimagesearch
 ## Compilation/Execution Instructions:
 In build/:\
-To run: Execute "./search -exampleparameter example_value ...". To see needed input consult the professor's pdf\
+To compile the main program: Execute "make"
+To run the main program: Execute "./search -exampleparameter example_value ...". To see needed input consult the professor's pdf\
 To clean compilation files: Execute "make clean"
 
 In root/:\
-To run cmake: "make run_cmake"\
-To clean cmake created and compilation files: "make clean"
+To run cmake: Execute "make" or "make run_cmake"\
+To clean entire build directory: Execute "make clean"
 
 ## Dependancies:
 cmake\
