@@ -2,6 +2,7 @@
 #define DATASET_H
 
 #include "../include/common.hpp"
+#include "../include/parameters.hpp"
 
 #include <string>
 #include <vector>
@@ -25,7 +26,7 @@ class Dataset{
         std::vector<HPatchesSequence> test;
 
         // Parses the split file and stores it's information in the struct
-        bool parseDataset(std::string filename, std::string hp_path);
+        bool parseDataset(const Parameters& parameters);
 };
 
 #endif

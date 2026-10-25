@@ -12,7 +12,7 @@
 // If this is turned on, make sure to delete "vocabulary_cache.xml" if any parameters affecting the kmeans,
 // like -K, -S, -seed or the splitfile are changed between executions.
 // I don't want to mess up any automatic checks, so this is off by default
-bool USE_VOCABULART_CACHE = true;
+bool USE_VOCABULART_CACHE = false;
 
 int main(int argc, char* args[]){
     // Store/Check the input parameters
@@ -23,7 +23,7 @@ int main(int argc, char* args[]){
 
     // Store/Check the contents of the splitfile
     Dataset dataset;
-    if (!dataset.parseDataset(parameters.split_path, parameters.hp_path)){
+    if (!dataset.parseDataset(parameters)){
         return 1;
     }
 

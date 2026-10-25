@@ -4,8 +4,8 @@
 #include <sstream>
 
 // Parses the split file and stores it's information in the struct
-bool Dataset::parseDataset(std::string filename, std::string hp_path){
-    std::ifstream splitfile(filename);
+bool Dataset::parseDataset(const Parameters& parameters){
+    std::ifstream splitfile(parameters.split_path);
     if (!splitfile.is_open()){
         fprintf(stderr, "Splitfile not found/can't be opened!\n");
         return false;
@@ -25,7 +25,7 @@ bool Dataset::parseDataset(std::string filename, std::string hp_path){
             // Add this lines info to the datasetset class
             HPatchesSequence sequence;
             sequence.name = name;
-            sequence.path = hp_path + "/" + name;
+            sequence.path = parameters.hp_path + "/" + name;
 
             if (set == "train"){
                 

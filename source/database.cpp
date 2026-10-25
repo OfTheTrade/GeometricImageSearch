@@ -28,7 +28,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
         
         std::string qr_img_path = hpatches_sequences[i].path + "/1.ppm";
 
-        if (Vectorizer::vectorizeImage(qr_img_path, vocabulary.centers, query.vector)){
+        if (Vectorizer::vectorizeImage(qr_img_path, query.vector, vocabulary)){
             this->searchQueries.push_back(query);
         }else{
             std::cout << "Warning : Unable to vectorize query image" << std::endl;
@@ -41,7 +41,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
 
             std::string hp_img_path = hpatches_sequences[i].path + "/" + std::to_string(j) + ".ppm";
 
-            if (Vectorizer::vectorizeImage(hp_img_path, vocabulary.centers, hp_record.vector)){
+            if (Vectorizer::vectorizeImage(hp_img_path, hp_record.vector, vocabulary)){
                 hp_records.push_back(hp_record);
             }else{
                 std::cout << "Warning : Unable to vectorize database image" << std::endl; 
@@ -63,7 +63,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
         
         std::string mir_img_path = parameters.mir_path + "/im" + std::to_string(mir_index) + ".jpg";
 
-        if (Vectorizer::vectorizeImage(mir_img_path, vocabulary.centers, mir_record.vector)){
+        if (Vectorizer::vectorizeImage(mir_img_path, mir_record.vector, vocabulary)){
             mir_records.push_back(mir_record);
         }else{
             std::cout << "Warning : Unable to vectorize mirflicker image" << std::endl;

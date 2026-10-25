@@ -1,6 +1,6 @@
 #include "../include/vectorizer.hpp"
 
-bool Vectorizer::vectorizeImage(const std::string& img_path, const cv::Mat& centers, std::vector<float>& img_vector){
+bool Vectorizer::vectorizeImage(const std::string& img_path, std::vector<float>& img_vector, const Vocabulary& vocabulary){
     // Open the image using opencv
     cv::Mat img = cv::imread(img_path, cv::IMREAD_GRAYSCALE);
 
@@ -21,13 +21,13 @@ bool Vectorizer::vectorizeImage(const std::string& img_path, const cv::Mat& cent
     }
 
     int descriptor_ammount = descriptors.rows;
-    int center_ammount = centers.rows;
+    int center_ammount = vocabulary.centers.rows;
     std::vector<int> center_descriptor_count(center_ammount, 0);
 
     // Use opencv matcher with euclidean norm to match each descriptor with it's closest vocabulary center.
     cv::BFMatcher matcher(cv::NORM_L2);
     std::vector<cv::DMatch> matches;
-    matcher.match(descriptors, centers, matches);
+    matcher.match(descriptors, vocabulary.centers, matches);
 
     // Count the ammount of descriptors each center is closest to
     for (size_t i = 0; i < matches.size(); i++){  
