@@ -31,7 +31,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
         if (Vectorizer::vectorizeImage(qr_img_path, query.vector, vocabulary)){
             this->searchQueries.push_back(query);
         }else{
-            std::cout << "Warning : Unable to vectorize query image" << std::endl;
+            std::cerr << "Warning : Unable to vectorize query image" << std::endl;
         }
 
         // Second to sixth image are put in the database
@@ -44,7 +44,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
             if (Vectorizer::vectorizeImage(hp_img_path, hp_record.vector, vocabulary)){
                 hp_records.push_back(hp_record);
             }else{
-                std::cout << "Warning : Unable to vectorize database image" << std::endl; 
+                std::cerr << "Warning : Unable to vectorize database image" << std::endl; 
             }
 
         }
@@ -59,20 +59,20 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
     // Process D mirflicker distractors, putting them into the database
     while (mir_records.size() < static_cast<size_t>(parameters.D)){  
         DatabaseRecord mir_record;
-        mir_record.image_id = "im" + std::to_string(mir_index);
+        mir_record.image_id = "im" + std::to_string(mir_index) + ".jpg";
         
         std::string mir_img_path = parameters.mir_path + "/im" + std::to_string(mir_index) + ".jpg";
 
         if (Vectorizer::vectorizeImage(mir_img_path, mir_record.vector, vocabulary)){
             mir_records.push_back(mir_record);
         }else{
-            std::cout << "Warning : Unable to vectorize mirflicker image" << std::endl;
+            std::cerr << "Warning : Unable to vectorize mirflicker image" << std::endl;
         }
 
         mir_index++;
 
         if (mir_index > 25000){
-            std::cout << "Run out of mirflicker images before gathering the asked ammount" << std::endl;
+            std::cerr << "Run out of mirflicker images before gathering the asked ammount" << std::endl;
             break;
         }
     }
@@ -83,7 +83,7 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
     this->databaseRecords.insert(databaseRecords.end(), hp_records.begin(), hp_records.end());
     this->databaseRecords.insert(databaseRecords.end(), mir_records.begin(), mir_records.end());
 
-    std::cout << "Database built!" << std::endl 
+    std::cerr << "Database built!" << std::endl 
               << "Search Queries: (" << this->searchQueries.size() << ")" << std::endl
               << "HPatches Records: (" << hp_records.size() << ")" << std::endl  
               << "MirFlicker Records: (" << mir_records.size() << ")" << std::endl

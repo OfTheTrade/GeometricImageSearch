@@ -6,6 +6,7 @@
 #include "../include/database.hpp"
 
 #include <filesystem>
+#include <fstream>
 #include <opencv2/opencv.hpp>
 
 
@@ -61,16 +62,75 @@ int main(int argc, char* args[]){
     }
 
     // Execute the correct type of search
+    std::vector<SearchResult> results;
     if (parameters.searchMethod == SearchMethod::EXACT){
-        RunSearch::runExactSearch(database.databaseRecords, database.searchQueries);
+        results = RunSearch::runExactSearch(database.databaseRecords, database.searchQueries);
     }else if (parameters.searchMethod == SearchMethod::LSH){
-        RunSearch::runLSHSearch(database.databaseRecords, database.searchQueries, parameters);
+        results = RunSearch::runLSHSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::HYPERCUBE){
-        RunSearch::runHypercubeSearch(database.databaseRecords, database.searchQueries, parameters);
+        results = RunSearch::runHypercubeSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::IVFFLAT){
-        RunSearch::runIVFFlatSearch(database.databaseRecords, database.searchQueries, parameters);
+        results = RunSearch::runIVFFlatSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::IVFPQ){
-        //RunSearch::runIVFPQSearch(database.databaseRecords, database.searchQueries, parameters);
+        // results = RunSearch::runIVFPQSearch(database.databaseRecords, database.searchQueries, parameters);
+    }
+
+    // Attempt to open/create output file
+    // If that fails, default to printing to stdout
+    std::ostream* output = &std::cout;
+    std::ofstream output_file(parameters.output_path);
+
+    if (output_file.is_open()){
+        output = &output_file;
+    }else{
+        std::cerr << "Output file could not be opened/created. Defaulting output to stdout!" << std::endl;
+    }
+
+    // Print the name of the search method used
+    if (parameters.searchMethod == SearchMethod::EXACT){
+        *output << "Exact Search" << std::endl; 
+    }else if (parameters.searchMethod == SearchMethod::LSH){
+        *output << "LSH" << std::endl; 
+    }else if (parameters.searchMethod == SearchMethod::HYPERCUBE){
+        *output << "Hypercube" << std::endl; 
+    }else if (parameters.searchMethod == SearchMethod::IVFFLAT){
+        *output << "IVFFlat" << std::endl; 
+    }else if (parameters.searchMethod == SearchMethod::IVFPQ){
+        *output << "IVFPQ" << std::endl; 
+    }
+
+    double total_recallAt5 = 0.0;
+    double total_recallAt10 = 0.0;
+    double total_APAt10 = 0.0;
+    double total_timeElapsed = 0.0;
+
+    // Output the individual results per vector item
+    for (std::size_t i = 0; i < results.size(); i++){
+        SearchResult current_result = results[i];
+
+        *output << "Query: " << current_result.sequence_id << std::endl;
+        for (std::size_t j = 0; j < current_result.top10PhotoIds.size(); j++){
+            *output << "Rank-" << j + 1 << ": " << current_result.top10PhotoIds[j] << std::endl;
+        }
+        *output << "Recall@5: " << current_result.RecallAt5 << std::endl
+                  << "Recall@10: " << current_result.RecallAt10 << std::endl
+                  << "AP@10: " << current_result.APAt10 << std::endl;
+
+        total_recallAt5 += current_result.RecallAt5;
+        total_recallAt10 += current_result.RecallAt10;
+        total_APAt10 += current_result.APAt10;
+        total_timeElapsed += current_result.timeElapsed;
+    }
+
+    // Output the mean results
+    std::size_t total_results = results.size();
+    if (total_results > 0){
+        *output << "Mean Recall@5: " << total_recallAt5 / total_results << std::endl
+                << "Mean Recall@10: " << total_recallAt10 / total_results << std::endl
+                << "mAP@10: " << total_APAt10 / total_results << std::endl
+                << "Average query time: " << total_timeElapsed / total_results << std::endl;
+    }else{
+        *output << "No search results found" << std::endl;
     }
 
     return 0;
