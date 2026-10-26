@@ -25,21 +25,21 @@ General Parameters (These have no default values and are necessary inputs to run
 -seed <int>: seed used for reproducability of results where randomness is needed.\
 Search Method Specific Parameters (These have default values and are not necessary inputs to run the program):\
 -exact OR -lsh OR -hypercube OR -ivfflat OR -ivfpq <search method>: name of the search method to be used\
-== Exact:\
+- Exact:\
 -Takes no inputs\
-== LSH:\
+- LSH:\
 -k <int>: Ammount of h_i functions making up each fragmentation function g. Default value: 4\
 -L <int>: Ammount of fragmentation matrixes. Default value: 5\
 -w <double>: Length of the cell on the projection line. Default value: 0.05\
-== Hypercube:\
+- Hypercube:\
 -kproj <int>: Dimension d' of the hypercube. Default value: 10\
 -w <double>: Length of the cell on the projection line. Default value: 0.05\
 -M <int>: Maximun number of potential points that are checked. Default value: 500\
 -probes <int>: Maximun number of vertices of the hypercube that are checked. Default value: 10\
-== IVFFlat:\
+- IVFFlat:\
 -kclusters <int>: Number of clusters in the index. Default value: sqrt(n)\
 -nprobe <int>: Number of nearest clusters checked during the search. Default value: 5\
-== IVFPQ:\
+- IVFPQ:\
 -kclusters <int>: Number of clusters in the index. Default value: sqrt(n)\
 -nprobe <int>: Number of nearest clusters checked during the search. Default value: 5\
 -M <int>: Number of subimages of product quantization. K must be exactly divisible by M. Default value : 16\
