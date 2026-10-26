@@ -1,6 +1,6 @@
 # geometricimagesearch
 ## Creators 
-- Αλέξης Ορλάνδος 1115202300149
+- Αλέξιος Ορλάνδος 1115202300149
 - ADD HERE
 
 ## Compilation/Execution Instructions:
