@@ -1,6 +1,6 @@
 # Purely here to use the CMakeLists with a smaller command
 BUILD_DIR = build
-MAIN_EXE = main
+MAIN_EXE = search
 
 .PHONY : run_cmake
 
