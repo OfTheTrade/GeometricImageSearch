@@ -7,13 +7,14 @@
 
 #include <filesystem>
 #include <fstream>
+#include <cmath>
 #include <opencv2/opencv.hpp>
 
 
 // If this is turned on, make sure to delete "vocabulary_cache.xml" if any parameters affecting the kmeans,
-// like -K, -S, -seed or the splitfile are changed between executions.
+// like -vocab, -S, -seed or the splitfile are changed between executions.
 // I don't want to mess up any automatic checks, so this is off by default
-bool USE_VOCABULART_CACHE = false;
+bool USE_VOCABULART_CACHE = true;
 
 int main(int argc, char* args[]){
     // Store/Check the input parameters
@@ -61,6 +62,14 @@ int main(int argc, char* args[]){
         return 1;
     }
 
+    // Now that the ammount of database vectors is decided, the default value of 
+    // -kclusters can be set, assuming the user did not input a value themselves
+    if (parameters.searchMethod == SearchMethod::IVFFLAT && parameters.ivfflat.kclusters < 0){
+        parameters.ivfflat.kclusters = static_cast<int>(std::ceil(std::sqrt(database.databaseRecords.size())));
+    }else if (parameters.searchMethod == SearchMethod::IVFPQ && parameters.ivfpq.kclusters < 0){
+        parameters.ivfpq.kclusters = static_cast<int>(std::ceil(std::sqrt(database.databaseRecords.size())));
+    }
+
     // Execute the correct type of search
     std::vector<SearchResult> results;
     if (parameters.searchMethod == SearchMethod::EXACT){
@@ -72,7 +81,7 @@ int main(int argc, char* args[]){
     }else if (parameters.searchMethod == SearchMethod::IVFFLAT){
         results = RunSearch::runIVFFlatSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::IVFPQ){
-        // results = RunSearch::runIVFPQSearch(database.databaseRecords, database.searchQueries, parameters);
+        results = RunSearch::runIVFPQSearch(database.databaseRecords, database.searchQueries, parameters);
     }
 
     // Attempt to open/create output file
@@ -131,6 +140,10 @@ int main(int argc, char* args[]){
                 << "Average query time: " << total_timeElapsed / total_results << std::endl;
     }else{
         *output << "No search results found" << std::endl;
+    }
+
+    if (output_file.is_open()){
+        output_file.close();
     }
 
     return 0;

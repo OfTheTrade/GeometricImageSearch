@@ -1,4 +1,6 @@
 #include "../include/parameters.hpp"
+
+#include <iostream>
 #include <cstring>
 
 // Parses args and fills out the parameter struct
@@ -112,7 +114,7 @@ bool Parameters::parseArgv(int argc, char* argv[]){
             this->ivfpq.nbits = atoi(argv[++i]);
 
         }else{
-            printf("Malformed parameter input, call in any order as specified in the pdf!\n");
+            std::cerr << "Malformed parameter input, call in any order as specified in the README.md!" << std::endl;
             return false;
         }
     }
@@ -120,9 +122,15 @@ bool Parameters::parseArgv(int argc, char* argv[]){
     // Detect missing or redundant crucial parameters
     for (int i = 0; i < 10; i++){
         if (basicParameterExists[i] != 1){
-            printf("Missing or redundant parameter input, call in any order as specified in the pdf!\n");
+            std::cerr << "Missing or redundant parameter input, call in any order as specified in the README.md!" << std::endl;
             return false;
         }
+    }
+
+    // In IVFPQ, -vocab must be exactly divisible by -M
+    if ((this->searchMethod == SearchMethod::IVFPQ) && (this->ivfpq.M <= 0 || this->vocab % this->ivfpq.M != 0)){
+        std::cerr << "In IVFPQ, -vocab must be exactly divisible by -M!" << std::endl;
+        return false;
     }
 
     return true;

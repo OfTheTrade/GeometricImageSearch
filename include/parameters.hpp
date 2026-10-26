@@ -80,7 +80,7 @@ class Parameters{
                 // Number of nearest clusters checked during the search
                 int nprobe = 5;
                 // Number of subimages of product quantization
-                // K must be exactly divisible by M
+                // K/-vocab must be exactly divisible by -M
                 int M = 16;
                 // Each subspace is clustered into 2^(nbits) clusters
                 // Default Clusters: 256
