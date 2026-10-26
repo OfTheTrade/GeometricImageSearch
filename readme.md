@@ -62,3 +62,24 @@ Needs the path to the splitfile, and the hpatches file (to create the correct fi
 
 ## Note for Vocabulary Caching
 Vocabulary Caching is turned off by default, as to not mess up any automated tests. To enable for the vocabulary, change the global variable "USE_VOCABULART_CACHE" in search.cpp. When the vocabulary training is successfuly run, the results will stored in a file called "vocabulary_cache.xml". If this is turned on, make sure to delete "vocabulary_cache.xml" if any parameters affecting the kmeans, like -K, -S, -seed or the splitfile are changed between executions, or else the results will be incorrect for the parameters given.
+
+## Search Methods
+1. Exhaustive Search (-exact)
+Description: Sequentially computes the Euclidean distance between the query vector and every vector in the database, returning the 10 nearest neighbors.
+Role: Serves as the ground-truth baseline to evaluate retrieval accuracy and runtime performance across all approximate methods.
+
+2. Locality Sensitive Hashing (-lsh)
+Parameters: -k <int> (number of hash functions), -L <int> (number of hash tables), -w <double> (projection window width).
+Description: Uses $p$-stable distributions to project high-dimensional vectors onto random lines and assigns them into $L$ hash tables. During querying, it exhaustively evaluates only candidate points that fall into the same buckets as the query in at least one table.
+
+3. Random Projection to Hypercube (-hypercube)
+Parameters: -kproj <int> (projection dimension $d'$), -w <double> (window width), -M <int> (maximum candidate points to check), -probes <int> (maximum vertices to visit).
+Description: Projects database vectors onto the $2^{d'}$ vertices of a binary hypercube. Search starts at the query's projected vertex and traverses neighboring vertices in increasing Hamming distance order, stopping once probes vertices or M candidate points have been inspected.
+
+4. Inverted File Flat (-ivfflat)
+Parameters: -kclusters <int> (number of coarse quantization clusters), -nprobe <int> (number of centroids to inspect).
+Description: Partitions the database vector space into clusters via k-means and stores records in inverted lists per cluster. At query time, it locates the nprobe nearest cluster centroids and computes exact distances only for the vectors contained within those lists.
+
+5. Inverted File Product Quantization (-ivfpq)
+Parameters: -kclusters <int> (number of coarse clusters), -nprobe <int> (clusters to inspect), -M <int> (number of sub-vectors), -nbits <int> (bits per subspace / codebook size $2^{nbits}$).
+Description: Applies coarse quantization to the database vectors and computes residual vectors ($r = x - c$). Residuals are split into $M$ sub-vectors and quantized using independent codebooks. Querying across the nprobe nearest coarse clusters is accelerated via Asymmetric Distance Computation (ADC) using precomputed Look-Up Tables (LUT).
