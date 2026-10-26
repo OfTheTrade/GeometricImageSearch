@@ -1,7 +1,8 @@
 # geometricimagesearch
 ## Creators 
 - Αλέξης Ορλάνδος 1115202300149
-- ADD HERe
+- ADD HERE
+
 ## Compilation/Execution Instructions:
 In build/:\
 -To compile the main program: Execute "make"\
