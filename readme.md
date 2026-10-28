@@ -1,7 +1,7 @@
 # geometricimagesearch
 ## Creators 
 - Αλέξιος Ορλάνδος 1115202300149
-- ADD HERE
+- Μανιαδακης Διονυσιος 1115202300111
 Repository: https://github.com/OfTheTrade/GeometricImageSearch
 
 ## Compilation/Execution Instructions:
@@ -88,3 +88,11 @@ Description: Partitions the database vector space into clusters via k-means and 
 5. Inverted File Product Quantization (-ivfpq)
 Parameters: -kclusters <int> (number of coarse clusters), -nprobe <int> (clusters to inspect), -M <int> (number of sub-vectors), -nbits <int> (bits per subspace / codebook size $2^{nbits}$).
 Description: Applies coarse quantization to the database vectors and computes residual vectors ($r = x - c$). Residuals are split into $M$ sub-vectors and quantized using independent codebooks. Querying across the nprobe nearest coarse clusters is accelerated via Asymmetric Distance Computation (ADC) using precomputed Look-Up Tables (LUT).
+
+## Key Design & Implementation Choices
+
+* **Feature Vector Normalization:** Raw visual-word histograms are normalized to unit norm ($L_2$ / $L_1$) so image representations remain invariant to the total number of detected SIFT keypoints across varying image resolutions.
+* **Asymmetric Distance Computation (ADC) on Residuals:** For IVF-PQ, codebooks are trained on coarse centroid residuals ($r = x - c$) rather than raw vectors, reducing quantization error. Distances are computed asymmetrically using precalculated Look-Up Tables (LUT) of size $M \times 2^{nbits}$, enabling $O(M)$ lookups per candidate without decompression.
+* **Memory-Efficient Quantized Storage:** Quantized residual assignments are stored as compact `uint8_t` vectors ($M$ bytes per database entry in inverted lists), minimizing index memory footprint.
+* **Robust Distractor Loading:** When parsing MIRFlickr-25K distractors, images that yield zero SIFT descriptors are automatically discarded and substituted by subsequent numbered images until exactly $D$ valid vectors populate the index.
+* **Vocabulary Caching:** Supports optional serializing/deserializing of visual words via `vocabulary_cache.xml` to avoid redundant k-means re-clustering during iterative query benchmarking.
