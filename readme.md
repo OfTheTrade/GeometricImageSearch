@@ -1,7 +1,7 @@
 # geometricimagesearch
 ## Creators 
-- Αλέξιος Ορλάνδος 1115202300149
-- Μανιαδακης Διονυσιος 1115202300111
+- Αλέξιος Ορλάνδος 1115202300149\
+- Μανιαδακης Διονυσιος 1115202300111\
 Repository: https://github.com/OfTheTrade/GeometricImageSearch
 
 ## Compilation/Execution Instructions:
