@@ -285,8 +285,9 @@ std::vector<SearchResult> RunSearch::runIVFPQSearch(
         // Compute Recall@5, Recall@10, and AP@10
         std::vector<int> relevant_ranks;
         int rel_in_top5 = 0;
+        size_t limit = std::min<size_t>(10, res.top10PhotoIds.size());
 
-        for (size_t rank = 0; rank < res.top10PhotoIds.size(); ++rank) {
+        for (size_t rank = 0; rank < limit; ++rank) {
             const std::string& id = res.top10PhotoIds[rank];
             // An image is relevant if it shares the same sequence_id prefix
             if (id.find(query_item.sequence_id + "/") == 0) {

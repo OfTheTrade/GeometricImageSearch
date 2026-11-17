@@ -27,8 +27,9 @@ static void evaluate_result(SearchResult& res){
     int hits_at_5 = 0;
     int hits_at_10 = 0;
     double ap_sum = 0.0;
+    int limit = std::min(10, static_cast<int>(res.top10PhotoIds.size()));
 
-    for(int rank = 0; rank < static_cast<int>(res.top10PhotoIds.size()); ++rank){
+    for(int rank = 0; rank < limit; ++rank){
         const std::string& photo_id = res.top10PhotoIds[rank];
         if(ground_truth.find(photo_id) != ground_truth.end()){
             hits_at_10++;
