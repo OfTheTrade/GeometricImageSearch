@@ -110,6 +110,7 @@ std::vector<SearchResult> RunSearch::runLSHSearch(
         return {};
     }
 
+    int C= parameters.C;
     int L= parameters.lsh.L;
     int k= parameters.lsh.k;
     float w= parameters.lsh.w;
@@ -131,7 +132,7 @@ std::vector<SearchResult> RunSearch::runLSHSearch(
         std::priority_queue<std::pair<float, std::string>> max_heap;
         for (size_t idx : candidates){
             float dist = euclideanDistanceSquared(query.vector, database[idx].vector);
-            if(max_heap.size() < 10){
+            if(max_heap.size() < static_cast<size_t>(C)){
                 max_heap.push({dist, database[idx].image_id});
             } else if (dist < max_heap.top().first){
                 max_heap.pop();

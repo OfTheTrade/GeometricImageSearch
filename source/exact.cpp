@@ -47,7 +47,8 @@ static void evaluate_result(SearchResult& res){
 // exact search implementation
 std::vector<SearchResult> RunSearch::runExactSearch(
     const std::vector<DatabaseRecord>& database,
-    const std::vector<SearchQuery>& queries
+    const std::vector<SearchQuery>& queries,
+    const Parameters parameters
 ) {
     std::vector<SearchResult> all_results;
     all_results.reserve(queries.size());
@@ -62,7 +63,7 @@ std::vector<SearchResult> RunSearch::runExactSearch(
 
         for (const auto& item : database) {
             float dist = distance_sq(query.vector, item.vector);
-            if (max_heap.size() < 10) {
+            if (max_heap.size() < static_cast<size_t>(parameters.C)) {
                 max_heap.push({dist, item.image_id});
             }else if (dist < max_heap.top().first) {
                 max_heap.pop();

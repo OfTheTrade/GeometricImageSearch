@@ -180,7 +180,7 @@ void IVFPQIndex::trainAndBuild(const std::vector<DatabaseRecord>& records, int s
     }
 }
 
-std::vector<std::pair<double, std::string>> IVFPQIndex::query(const std::vector<float>& query_vec) const {
+std::vector<std::pair<double, std::string>> IVFPQIndex::query(const std::vector<float>& query_vec, int C) const {
     // 1. Find the nprobe nearest coarse centroids to the query vector
     std::vector<std::pair<float, int>> coarse_distances(k_coarse);
     for (int c = 0; c < k_coarse; ++c) {
@@ -225,7 +225,7 @@ std::vector<std::pair<double, std::string>> IVFPQIndex::query(const std::vector<
     }
 
     // Sort and select top 10 candidates
-    int top_k = std::min(10, static_cast<int>(candidates.size()));
+    int top_k = std::min(C, static_cast<int>(candidates.size()));
     std::partial_sort(candidates.begin(), candidates.begin() + top_k, candidates.end());
     if (static_cast<int>(candidates.size()) > top_k) {
         candidates.resize(top_k);
@@ -273,7 +273,7 @@ std::vector<SearchResult> RunSearch::runIVFPQSearch(
 
         // Measure query search time in milliseconds (excluding index build)
         auto t_start = std::chrono::high_resolution_clock::now();
-        auto top_matches = index.query(q_vec);
+        auto top_matches = index.query(q_vec, parameters.C);
         auto t_end = std::chrono::high_resolution_clock::now();
 
         res.timeElapsed = std::chrono::duration<double, std::milli>(t_end - t_start).count();

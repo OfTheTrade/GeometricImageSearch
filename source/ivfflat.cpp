@@ -132,10 +132,10 @@ std::vector<SearchResult> RunSearch::runIVFFlatSearch(
     }
 
     int nprobe = parameters.ivfflat.nprobe;
-    int max_iters = 15;
+    int dim = static_cast<int>(database[0].vector.size());
     unsigned int seed = parameters.seed;
 
-    IVFFlatIndex index(k_clusters, nprobe, max_iters, seed, database);
+    IVFFlatIndex index(k_clusters, nprobe, dim, seed, database);
 
     std::vector<SearchResult> results;
     results.reserve(queries.size());
@@ -149,7 +149,7 @@ std::vector<SearchResult> RunSearch::runIVFFlatSearch(
 
         for (size_t idx : candidates) {
             float dist = euclideanDistanceSquared(query.vector, database[idx].vector);
-            if (max_heap.size() < 10) {
+            if (max_heap.size() < static_cast<size_t>(parameters.C)) {
                 max_heap.push({dist, database[idx].image_id});
             } else if (dist < max_heap.top().first) {
                 max_heap.pop();

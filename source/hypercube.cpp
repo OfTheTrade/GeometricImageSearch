@@ -130,10 +130,10 @@ std::vector<SearchResult> RunSearch::runHypercubeSearch(
     for (const auto& query : queries) {
         auto start_time = std::chrono::high_resolution_clock::now();
         std::vector<size_t> candidates = index.queryCandidates(query.vector);
-        std::priority_queue<std::pair<float, std::string>, std::vector<std::pair<float, std::string>>, std::greater<std::pair<float, std::string>>> max_heap;
+        std::priority_queue<std::pair<float, std::string>> max_heap;
         for (size_t idx : candidates) {
             float dist = euclideanDistance(query.vector, database[idx].vector);
-            if(max_heap.size() < 10){
+            if(max_heap.size() < static_cast<size_t>(parameters.C)){
                 max_heap.push({dist, database[idx].image_id});
             } else if(dist < max_heap.top().first){
                 max_heap.pop();
