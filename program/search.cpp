@@ -73,7 +73,7 @@ int main(int argc, char* args[]){
     // Execute the correct type of search
     std::vector<SearchResult> results;
     if (parameters.searchMethod == SearchMethod::EXACT){
-        results = RunSearch::runExactSearch(database.databaseRecords, database.searchQueries);
+        results = RunSearch::runExactSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::LSH){
         results = RunSearch::runLSHSearch(database.databaseRecords, database.searchQueries, parameters);
     }else if (parameters.searchMethod == SearchMethod::HYPERCUBE){

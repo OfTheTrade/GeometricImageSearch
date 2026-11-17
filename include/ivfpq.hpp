@@ -43,7 +43,7 @@ public:
 
     void trainAndBuild(const std::vector<DatabaseRecord>& records, int seed);
 
-    std::vector<std::pair<double, std::string>> query(const std::vector<float>& query_vec) const;
+    std::vector<std::pair<double, std::string>> query(const std::vector<float>& query_vec, int C) const;
 };
 
 #endif // IVFPQ_HPP
