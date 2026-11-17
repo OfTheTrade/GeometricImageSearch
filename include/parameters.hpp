@@ -34,6 +34,24 @@ class Parameters{
         SearchMethod searchMethod;
 
         // ===================================
+        //       Verification Variables
+        // ===================================
+
+        // Ammount of candidate images
+        int C = 50;
+        // Lowe limit
+        double rho  = 0.8;
+        // Reprojection threshold in pixels
+        double tau = 3;
+        // Max RANSAC executions
+        int T = 2000;
+        // Preffered probability
+        double p = 0.99;
+        // Adjustible test limit
+        // 1 or 0
+        int adaptive = 1;
+
+        // ===================================
         //      Search Specific Variables
         // ===================================
 
