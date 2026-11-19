@@ -8,6 +8,7 @@
 bool Parameters::parseArgv(int argc, char* argv[]){
     // Stores the ammount of times a parameter has been set
     int basicParameterExists[10] = {0};
+    int kclustersParameterExists = 0;
 
     // Go through argv, accepting correctly formated parameters
     // If it reaches something it does not recognise, return with false
@@ -74,8 +75,42 @@ bool Parameters::parseArgv(int argc, char* argv[]){
         }else if(std::strcmp(argv[i],"-ivfpq") == 0){
             this->searchMethod = SearchMethod::IVFPQ;
             basicParameterExists[9]++;
+        
+        // Bellow here the parameters have default values and are not
+        // necessary to define
+        // ==========================================================
 
+        // Verification process parameters
+        }else if(std::strcmp(argv[i],"-C") == 0 && i + 1 < argc){
+            int temp = atoi(argv[++i]);
+            if (temp < 10){
+                std::cerr << "-C parameter should have a value >= 10!" << std::endl;
+                return false;
+            }
 
+            this->C = temp;
+        
+        }else if(std::strcmp(argv[i],"-rho") == 0 && i + 1 < argc){
+            this->rho = atof(argv[++i]);
+
+        }else if(std::strcmp(argv[i],"-tau") == 0 && i + 1 < argc){
+            this->tau = atof(argv[++i]);
+
+        }else if(std::strcmp(argv[i],"-T") == 0 && i + 1 < argc){
+            this->T = atoi(argv[++i]);
+        
+        }else if(std::strcmp(argv[i],"-p") == 0 && i + 1 < argc){
+            this->p = atof(argv[++i]);
+
+        }else if(std::strcmp(argv[i],"-adaptive") == 0 && i + 1 < argc && std::strcmp(argv[i+1],"0") == 0){
+            i++;
+            this->adaptive = 0;
+
+        }else if(std::strcmp(argv[i],"-adaptive") == 0 && i + 1 < argc && std::strcmp(argv[i+1],"1") == 0){
+            i++;
+            this->adaptive = 1;
+
+        // Search method parameters
         }else if(std::strcmp(argv[i],"-k") == 0 && i + 1 < argc){
             this->lsh.k = atoi(argv[++i]);
 
@@ -104,6 +139,7 @@ bool Parameters::parseArgv(int argc, char* argv[]){
             int temp = atoi(argv[++i]);
             this->ivfflat.kclusters = temp;
             this->ivfpq.kclusters = temp;
+            kclustersParameterExists++;
 
         }else if(std::strcmp(argv[i],"-nprobe") == 0 && i + 1 < argc){
             int temp = atoi(argv[++i]);
@@ -132,6 +168,12 @@ bool Parameters::parseArgv(int argc, char* argv[]){
         std::cerr << "In IVFPQ, -vocab must be exactly divisible by -M!" << std::endl;
         return false;
     }
+
+    // If IVFPQ or IVFFlat is chosen, kclusters must be defined, as it has no default value
+    if ((this->searchMethod == SearchMethod::IVFPQ || this->searchMethod == SearchMethod::IVFFLAT) && !kclustersParameterExists){
+        std::cerr << "In both IVF searches, -kclusters is a necessary parameter!" << std::endl;
+        return false;
+    } 
 
     return true;
 }

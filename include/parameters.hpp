@@ -84,8 +84,9 @@ class Parameters{
         struct IVFFlat{
             public:
                 // Number of clusters in the index
-                // Actual default value (ceil(sqrt(n))) need to be calculated later
-                int kclusters = -1;
+                // In the second part, it has no default value and has to be defined by parameter
+                // to use IVFFlat
+                int kclusters;
                 // Number of nearest clusters checked during the search
                 int nprobe = 5;
         };
@@ -93,8 +94,9 @@ class Parameters{
         struct IVFPQ{
             public:
                 // Number of clusters in the index
-                // Actual default value (ceil(sqrt(n))) need to be calculated later
-                int kclusters = -1;
+                // In the second part, it has no default value and has to be defined by parameter
+                // to use ivfpq
+                int kclusters;
                 // Number of nearest clusters checked during the search
                 int nprobe = 5;
                 // Number of subimages of product quantization
