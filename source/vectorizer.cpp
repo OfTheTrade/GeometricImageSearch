@@ -1,6 +1,6 @@
 #include "../include/vectorizer.hpp"
 
-bool Vectorizer::vectorizeImage(const std::string& img_path, std::vector<float>& img_vector, const Vocabulary& vocabulary){
+bool Vectorizer::vectorizeImage(const std::string& img_path, std::vector<float>& img_vector, SiftData& siftData, const Vocabulary& vocabulary){
     // Open the image using opencv
     cv::Mat img = cv::imread(img_path, cv::IMREAD_GRAYSCALE);
 
@@ -19,6 +19,10 @@ bool Vectorizer::vectorizeImage(const std::string& img_path, std::vector<float>&
         std::cerr << "Image with no sift descriptors: (" << img_path << ")" << std::endl;
         return false;
     }
+    
+    // Store sift features in SiftData struct
+    siftData.descriptors = descriptors;
+    siftData.keypoints = keypoints;
 
     int descriptor_ammount = descriptors.rows;
     int center_ammount = vocabulary.centers.rows;

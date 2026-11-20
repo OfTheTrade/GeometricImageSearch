@@ -2,6 +2,8 @@
 
 #include "../include/vectorizer.hpp"
 
+#include <utility>
+
 // Builds the database given to the search methods
 // Return true on success, false on failure
 bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary, const Dataset& dataset){
@@ -25,11 +27,13 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
         // First picture are put in the query vector
         SearchQuery query;
         query.sequence_id = hpatches_sequences[i].name;
+        SiftData query_sift_data;
         
         std::string qr_img_path = hpatches_sequences[i].path + "/1.ppm";
 
-        if (Vectorizer::vectorizeImage(qr_img_path, query.vector, vocabulary)){
+        if (Vectorizer::vectorizeImage(qr_img_path, query.vector, query_sift_data, vocabulary)){
             this->searchQueries.push_back(query);
+            this->querySiftData[query.sequence_id] = std::move(query_sift_data);
         }else{
             std::cerr << "Warning : Unable to vectorize query image" << std::endl;
         }
@@ -38,10 +42,12 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
         for (int j = 2; j <= 6; j++){
             DatabaseRecord hp_record;
             hp_record.image_id = hpatches_sequences[i].name + "/" + std::to_string(j);
+            SiftData hp_sift_data;
 
             std::string hp_img_path = hpatches_sequences[i].path + "/" + std::to_string(j) + ".ppm";
 
-            if (Vectorizer::vectorizeImage(hp_img_path, hp_record.vector, vocabulary)){
+            if (Vectorizer::vectorizeImage(hp_img_path, hp_record.vector, hp_sift_data, vocabulary)){
+                this->recordSiftData[hp_record.image_id] = std::move(hp_sift_data);
                 hp_records.push_back(hp_record);
             }else{
                 std::cerr << "Warning : Unable to vectorize database image" << std::endl; 
@@ -60,10 +66,12 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
     while (mir_records.size() < static_cast<size_t>(parameters.D)){  
         DatabaseRecord mir_record;
         mir_record.image_id = "im" + std::to_string(mir_index) + ".jpg";
+        SiftData mir_sift_data;
         
         std::string mir_img_path = parameters.mir_path + "/im" + std::to_string(mir_index) + ".jpg";
 
-        if (Vectorizer::vectorizeImage(mir_img_path, mir_record.vector, vocabulary)){
+        if (Vectorizer::vectorizeImage(mir_img_path, mir_record.vector, mir_sift_data, vocabulary)){
+            this->recordSiftData[mir_record.image_id] = std::move(mir_sift_data);
             mir_records.push_back(mir_record);
         }else{
             std::cerr << "Warning : Unable to vectorize mirflicker image" << std::endl;
@@ -89,5 +97,23 @@ bool Database::build(const Parameters& parameters, const Vocabulary& vocabulary,
               << "MirFlicker Records: (" << mir_records.size() << ")" << std::endl
               << "Total Records: (" << this->databaseRecords.size() << ")" << std::endl;
             
+    return true;
+}
+
+bool Database::getRecordSiftDataByImageId(const std::string& image_id, SiftData& outputSiftData) const{
+    std::unordered_map<std::string, SiftData>::const_iterator it = this->recordSiftData.find(image_id);
+    if (it == this->recordSiftData.end()){
+        return false;
+    }
+    outputSiftData = it->second;
+    return true;
+}
+
+bool Database::getQuerySiftDataBySequenceId(const std::string& sequence_id, SiftData& outputSiftData) const{
+    std::unordered_map<std::string, SiftData>::const_iterator it = this->querySiftData.find(sequence_id);
+    if (it == this->querySiftData.end()){
+        return false;
+    }
+    outputSiftData = it->second;
     return true;
 }
