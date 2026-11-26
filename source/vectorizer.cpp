@@ -9,6 +9,10 @@ bool Vectorizer::vectorizeImage(const std::string& img_path, std::vector<float>&
         return false;
     }
 
+    // Store image pixel size
+    siftData.width = img.cols;
+    siftData.height = img.rows;
+
     // Extract the sift descriptors using opencv
     cv::Ptr<cv::SIFT> sift = cv::SIFT::create();
     std::vector<cv::KeyPoint> keypoints;

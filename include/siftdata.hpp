@@ -8,6 +8,8 @@
 struct SiftData{
     std::vector<cv::KeyPoint> keypoints;
     cv::Mat descriptors;
+    int height;
+    int width;
 };
 
 #endif
