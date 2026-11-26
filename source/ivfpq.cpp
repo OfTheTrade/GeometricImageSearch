@@ -279,16 +279,16 @@ std::vector<SearchResult> RunSearch::runIVFPQSearch(
         res.timeElapsed = std::chrono::duration<double, std::milli>(t_end - t_start).count();
 
         for (const auto& match : top_matches) {
-            res.top10PhotoIds.push_back(match.second);
+            res.topCPhotoIds.push_back(match.second);
         }
 
         // Compute Recall@5, Recall@10, and AP@10
         std::vector<int> relevant_ranks;
         int rel_in_top5 = 0;
-        size_t limit = std::min<size_t>(10, res.top10PhotoIds.size());
+        size_t limit = std::min<size_t>(10, res.topCPhotoIds.size());
 
         for (size_t rank = 0; rank < limit; ++rank) {
-            const std::string& id = res.top10PhotoIds[rank];
+            const std::string& id = res.topCPhotoIds[rank];
             // An image is relevant if it shares the same sequence_id prefix
             if (id.find(query_item.sequence_id + "/") == 0) {
                 relevant_ranks.push_back(static_cast<int>(rank) + 1);

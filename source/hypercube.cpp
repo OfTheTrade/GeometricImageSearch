@@ -172,7 +172,7 @@ std::vector<SearchResult> RunSearch::runHypercubeSearch(
         SearchResult result;
         result.sequence_id = query.sequence_id;
         result.timeElapsed = elapsed.count();
-        result.top10PhotoIds = top10;
+        result.topCPhotoIds = top10;
         result.RecallAt5 = relevant_at_5 / 5.0;
         result.RecallAt10 = relevant_at_10 / 5.0;
         result.APAt10 = precision_sum / 5.0;

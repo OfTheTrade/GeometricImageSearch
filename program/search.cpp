@@ -118,8 +118,8 @@ int main(int argc, char* args[]){
         SearchResult current_result = results[i];
 
         *output << "Query: " << current_result.sequence_id << std::endl;
-        for (std::size_t j = 0; j < current_result.top10PhotoIds.size(); j++){
-            *output << "Rank-" << j + 1 << ": " << current_result.top10PhotoIds[j] << std::endl;
+        for (std::size_t j = 0; j < current_result.topCPhotoIds.size(); j++){
+            *output << "Rank-" << j + 1 << ": " << current_result.topCPhotoIds[j] << std::endl;
         }
         *output << "Recall@5: " << current_result.RecallAt5 << std::endl
                   << "Recall@10: " << current_result.RecallAt10 << std::endl

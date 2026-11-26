@@ -190,7 +190,7 @@ std::vector<SearchResult> RunSearch::runIVFFlatSearch(
         SearchResult res;
         res.sequence_id = query.sequence_id;
         res.timeElapsed = elapsed.count();
-        res.top10PhotoIds = top10;
+        res.topCPhotoIds = top10;
         res.RecallAt5 = relevant_at_5 / 5.0;
         res.RecallAt10 = relevant_at_10 / 5.0;
         res.APAt10 = precision_sum / 5.0;

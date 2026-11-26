@@ -27,10 +27,10 @@ static void evaluate_result(SearchResult& res){
     int hits_at_5 = 0;
     int hits_at_10 = 0;
     double ap_sum = 0.0;
-    int limit = std::min(10, static_cast<int>(res.top10PhotoIds.size()));
+    int limit = std::min(10, static_cast<int>(res.topCPhotoIds.size()));
 
     for(int rank = 0; rank < limit; ++rank){
-        const std::string& photo_id = res.top10PhotoIds[rank];
+        const std::string& photo_id = res.topCPhotoIds[rank];
         if(ground_truth.find(photo_id) != ground_truth.end()){
             hits_at_10++;
             if(rank < 5){
@@ -80,7 +80,7 @@ std::vector<SearchResult> RunSearch::runExactSearch(
         }
         auto end = std::chrono::high_resolution_clock::now();
         res.timeElapsed = std::chrono::duration<double, std::milli>(end - start_time).count();
-        res.top10PhotoIds = top10;
+        res.topCPhotoIds = top10;
         evaluate_result(res);
         all_results.push_back(res);
     }

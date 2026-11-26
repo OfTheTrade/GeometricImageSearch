@@ -26,7 +26,7 @@ struct SearchResult{
     // HPatches folder
     std::string sequence_id;
     // Top 10 ranked images
-    std::vector<std::string> top10PhotoIds;
+    std::vector<std::string> topCPhotoIds;
     
     // Comparison Metrics
     double RecallAt5 = 0.0;
