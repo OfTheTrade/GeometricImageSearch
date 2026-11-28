@@ -1,4 +1,5 @@
 #include "../include/ransac.hpp"
+#include "../include/homography.hpp"
 #include <cmath>
 #include <algorithm>
 #include <limits>
@@ -172,8 +173,7 @@ RansacOutput runRANSAC(
     int T_max,
     double p,
     bool adaptive,
-    std::mt19937& rng,
-    const HomographyEstimator& estimateHomography
+    std::mt19937& rng
 ) {
     RansacOutput result;
     const int M = static_cast<int>(matches.size());
@@ -226,7 +226,7 @@ RansacOutput runRANSAC(
 
         // Εκτίμηση ομογραφίας H με κανονικοποιημένο DLT/SVD
         cv::Mat H_cand;
-        if (!estimateHomography(sample, H_cand)) {
+        if (!estimateHomographyDLT(sample, H_cand)) {
             continue;
         }
         if (!isValidHomographyMatrix(H_cand)) {
@@ -295,7 +295,7 @@ RansacOutput runRANSAC(
     std::vector<int> final_inlier_indices;
     double final_median_error = std::numeric_limits<double>::infinity();
 
-    bool refit_ok = estimateHomography(inlier_matches, H_refit) && isValidHomographyMatrix(H_refit);
+    bool refit_ok = estimateHomographyDLT(inlier_matches, H_refit) && isValidHomographyMatrix(H_refit);
 
     if (refit_ok) {
         // Επανυπολογισμός inliers σε όλες τις M αρχικές αντιστοιχίσεις με την H_refit

@@ -16,10 +16,6 @@ struct RansacOutput {
     std::vector<int> inlierIndices;
 };
 
-// Τύπος συνάρτησης για τον υπολογισμό Normalized DLT/SVD (δεν την εχω ακομα)
-// Δέχεται >= 4 αντιστοιχίσεις και επιστρέφει true αν παρήχθη έγκυρος 3x3 CV_64F πίνακας H
-using HomographyEstimator = std::function<bool(const std::vector<PointMatch>&, cv::Mat&)>;
-
 // Εκτελεί RANSAC + Refit για ένα σύνολο αποδεκτών αντιστοιχίσεων
 RansacOutput runRANSAC(
     const std::vector<PointMatch>& matches,
@@ -27,8 +23,7 @@ RansacOutput runRANSAC(
     int T_max,
     double p,
     bool adaptive,
-    std::mt19937& rng,
-    const HomographyEstimator& estimateHomography
+    std::mt19937& rng
 );
 
 #endif // RANSAC_HPP
